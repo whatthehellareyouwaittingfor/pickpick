@@ -24,7 +24,7 @@ class Used extends Rest{
     }
     public function fetch($name){
         if(!empty($name)){
-            $cdata=Db::query("select * from $name ORDER BY rand() LIMIT 4");
+            $cdata=Db::query("select * from $name ORDER BY rand() LIMIT 1");
             $cname=Db::query("show columns from $name");
             $fields=[];
             foreach ($cname as $key=>$value){

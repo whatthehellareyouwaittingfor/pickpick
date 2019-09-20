@@ -24,7 +24,7 @@ class Tables extends Rest{
     }
     public function fetch($name){
 	    if(!empty($name)){
-            $cdata=Db::query("select * from $name ORDER BY rand() LIMIT 4");
+            $cdata=Db::query("select * from $name ORDER BY rand() LIMIT 1");
             $cname=Db::query("show columns from $name");
             $fields=[];
             foreach ($cname as $key=>$value){
@@ -48,7 +48,7 @@ class Tables extends Rest{
         if(!empty($columns)){
         if(!strstr($columns,'id')){
             $columns='id,'.$columns;
-            $cdata=Db::query("select ".$columns." from ".$param['region']." ORDER BY rand() LIMIT 4");
+            $cdata=Db::query("select ".$columns." from ".$param['region']." ORDER BY rand() LIMIT 1");
             foreach (explode(',',$columns) as $key=>$value){
                 $fields[]=$value;
             }
@@ -57,7 +57,7 @@ class Tables extends Rest{
                 'field'=>$fields,
             ];
         }}else{
-            $cdata=Db::query("select * from ".$param['region']." ORDER BY rand() LIMIT 4");
+            $cdata=Db::query("select * from ".$param['region']." ORDER BY rand() LIMIT 1");
             $cname=Db::query("show columns from ".$param['region']);
             $fields=[];
             foreach ($cname as $key=>$value){
