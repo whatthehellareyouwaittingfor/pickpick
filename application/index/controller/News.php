@@ -2,12 +2,13 @@
 namespace app\index\controller;
 use think\Request;
 use think\controller\Rest;
+use think\db;
 
 class News extends Rest{
 	public function rest(){
         switch ($this->method){
 			case 'get': 	//查询
-				$this->read($id);
+				$this->read($name);
 				break;
 			case 'post':	//新增
 				$this->add();
@@ -21,22 +22,25 @@ class News extends Rest{
 			
         }
     }
-    public function read($id){
-		$model = model('News');
-		//$data = $model::get($id)->getData();
-		//$model = new NewsModel();
-		$data=$model->where('id', $id)->find();// 查询单个数据
-		return json($data);
+    public function read($name){
+	    if(!empty($name)){
+	        $name=$name.'%';
+        }
+        $data=Db::query("show tables like '$name'");
+	    $array=[];
+	    foreach ($data as $key=>$value){
+	        $array[]=$value["Tables_in_offerstop (".$name.")"];
+        }
+		return $array;
     }
 	
 	public function add(){
-		$model = model('News');
 		$param=Request::instance()->param();//获取当前请求的所有变量（经过过滤）
-		if($model->save($param)){
-			return json(["status"=>1]);
-		}else{
-			return json(["status"=>0]);
-		}
+        foreach ($param['data'] as $key=>$value){
+            Db::execute('insert into gms_userdata_history (userid,srctable,offerid,networkName,usedtime) values (:userid, :srctable, :offerid, :networkName, :usedtime)',['userid'=>10086,'srctable'=>$param['region'],'offerid'=>intval($param['id']),'networkName'=>$value['value'],'usedtime'=>date("Y-m-d H:i:s",time())]);
+        }
+        $data=[];
+        return $data;
     }
 	public function update($id){
 		$model = model('News');
@@ -47,14 +51,8 @@ class News extends Rest{
 			return json(["status"=>0]);
 		}
     }
-	public function delete($id){
-		
-		$model = model('News');
-		$rs=$model::get($id)->delete();
-		if($rs){
-			return json(["status"=>1]);
-		}else{
-			return json(["status"=>0]);
-		}
+	public function delete(){
+	    $data = Db::query('select * from gms_userdata_history where userid=:id order by usedtime desc',['id'=>10086]);
+	    return $data;
     }
 }
