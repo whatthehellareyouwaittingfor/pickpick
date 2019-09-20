@@ -2,7 +2,7 @@
 namespace app\index\controller;
 use think\Request;
 use think\controller\Rest;
-use think\db;
+use think\Db;
 
 class News extends Rest{
 	public function rest(){

@@ -17,7 +17,6 @@ use think\Response;
 
 abstract class Rest
 {
-
     protected $method; // 当前请求类型
     protected $type; // 当前资源类型
     // 输出类型

@@ -2,7 +2,7 @@
 namespace app\index\controller;
 use think\Request;
 use think\controller\Rest;
-use think\db;
+use think\Db;
 
 class Tables extends Rest{
 	public function rest(){
@@ -71,14 +71,9 @@ class Tables extends Rest{
 
         return $data;
     }
-	public function update($id){
-		$model = model('News');
-		$param=Request::instance()->param();
-		if($model->where("id",$id)->update($param)){
-			return json(["status"=>1]);
-		}else{
-			return json(["status"=>0]);
-		}
+	public function update(){
+	    $data = Db::query('select * from gms_userdata_history where userid=:id order by usedtime desc',['id'=>10086]);
+	    return $data;
     }
 	public function delete($id){
 		
